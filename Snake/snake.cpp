@@ -31,16 +31,17 @@ void Snake::UpdatePositions()
 		{
 			*pieces[current] += velocity;
 
+
 			//Check for Collision with Body/Apple or Border
-			switch (CheckPosition(pieces[current]->GetX(), pieces[current]->GetY()))
-			{
-			case SNAKE_BODY:
+			auto results = CheckPosition(pieces[current]->GetX(), pieces[current]->GetY());
+			
+			if (ResultBody(results))
 				running = false;
-				break;
-			case SNAKE_APPLE:
+			
+			if (ResultApple(results))
+			{
 				DeleteApple(pieces[current]->GetX(), pieces[current]->GetY());
 				AddPiece();
-				break;
 			}
 
 			if (IsOutOfBounds(pieces[current]->GetX(), pieces[current]->GetY()))
@@ -61,15 +62,9 @@ void Snake::SetVelocity(int x, int y)
 	velocity[1] = y;
 }
 
-int Snake::CheckPosition(unsigned x, unsigned y)
+std::vector<int> Snake::CheckPosition(unsigned x, unsigned y)
 {
-	for (Apple* apple : apples) //Check for apple first
-	{
-		if (apple->GetX() == x && apple->GetY() == y)
-		{
-			return SNAKE_APPLE;
-		}
-	}
+	std::vector<int> result;
 
 	for (unsigned i = 0; i < pieces.size(); i++)
 	{
@@ -77,13 +72,59 @@ int Snake::CheckPosition(unsigned x, unsigned y)
 		if (piece->GetX() == x && piece->GetY() == y)
 		{
 			if (i == 0)
-				return SNAKE_HEAD;
+				result.push_back(SNAKE_HEAD);
 			else
-				return SNAKE_BODY;
+				result.push_back(SNAKE_BODY);
 		}
 	}
 
-	return SNAKE_NONE;
+	for (Apple* apple : apples) //Check for apple first
+	{
+		if (apple->GetX() == x && apple->GetY() == y)
+		{
+			result.push_back(SNAKE_APPLE);
+		}
+	}
+
+	return result;
+}
+
+bool Snake::ResultNone(std::vector<int> results)
+{
+	return results.size() == 0;
+}
+
+bool Snake::ResultHead(std::vector<int> results)
+{
+	for (auto result : results)
+	{
+		if (result == SNAKE_HEAD)
+			return true;
+	}
+
+	return false;
+}
+
+bool Snake::ResultBody(std::vector<int> results)
+{
+	for (auto result : results)
+	{
+		if (result == SNAKE_BODY)
+			return true;
+	}
+
+	return false;
+}
+
+bool Snake::ResultApple(std::vector<int> results)
+{
+	for (auto result : results)
+	{
+		if (result == SNAKE_APPLE)
+			return true;
+	}
+
+	return false;
 }
 
 bool Snake::IsOutOfBounds(unsigned x, unsigned y)
@@ -97,7 +138,7 @@ void Snake::AddApple(unsigned w, unsigned h)
 	do
 	{
 		neu = new Apple(w, h);
-	} while (CheckPosition(neu->GetX(), neu->GetY()) != SNAKE_NONE); //Check for empty pos
+	} while (!ResultNone(CheckPosition(neu->GetX(), neu->GetY()))); //Check for empty pos
 
 	apples.push_back(neu);
 }

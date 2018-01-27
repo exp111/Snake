@@ -18,21 +18,16 @@ void drawBoard()
 	{
 		for (unsigned x = 0; x < boardWidth; x++)
 		{
-			switch (Game->CheckPosition(x, y))
-			{
-			case SNAKE_NONE:
-				cout << "+";
-				break;
-			case SNAKE_HEAD:
+			auto result = Game->CheckPosition(x, y);
+			
+			if (Game->ResultNone(result))
+				cout << "+";	
+			else if (Game->ResultHead(result))
 				cout << "*";
-				break;
-			case SNAKE_BODY:
-				cout << "#";
-				break;
-			case SNAKE_APPLE:
+			else if (Game->ResultBody(result))
+				cout << "#";			
+			else if (Game->ResultApple(result))
 				cout << "@";
-				break;
-			}
 		}
 		cout << endl;
 	}

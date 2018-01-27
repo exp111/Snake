@@ -90,7 +90,15 @@ public:
 
 	void SetVelocity(int x, int y);
 
-	int CheckPosition(unsigned x, unsigned y);
+	std::vector<int> CheckPosition(unsigned x, unsigned y);
+
+	bool ResultNone(std::vector<int> results);
+
+	bool ResultHead(std::vector<int> results);
+
+	bool ResultBody(std::vector<int> results);
+
+	bool ResultApple(std::vector<int> results);
 
 	bool IsOutOfBounds(unsigned x, unsigned y);
 
