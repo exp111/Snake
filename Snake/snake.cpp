@@ -159,3 +159,95 @@ void Snake::DeleteApple(unsigned x, unsigned y)
 		}
 	}
 }
+
+void Snake::Start()
+{
+	Init(boardWidth / 2, boardHeight / 2);
+}
+
+void Snake::Run()
+{
+	static int timer = 0;
+	if (IsRunning())
+	{
+		if (timer > 10)
+		{
+			UpdatePositions();
+			CheckAppleSpawn();
+			timer = 0;
+		}
+		timer++;
+		Draw();
+		CheckControls();
+	}
+	else
+	{
+		//reset Game
+		pieces.erase(pieces.begin(), pieces.end());
+		apples.erase(apples.begin(), apples.end());
+		velocity.erase(velocity.begin(), velocity.end());
+	}
+}
+
+void Snake::DrawFilledRect(ImDrawList* drawlist, unsigned x, unsigned y, ImVec4 color)
+{
+	ImVec2 winpos = ImGui::GetWindowPos();
+	const static float titleBarHeight = ImGui::GetTextLineHeight() + ImGui::GetStyle().FramePadding.y * 2.0f;
+	drawlist->AddRectFilled(ImVec2(winpos.x + x*tileWidth, winpos.y + titleBarHeight + y*tileHeight), ImVec2(winpos.x + (x + 1)*tileWidth, winpos.y + titleBarHeight + (y + 1)*tileHeight), ImGui::GetColorU32(color));
+}
+
+void Snake::Draw()
+{
+	ImGui::Begin("Snake");
+	const static float titleBarHeight = ImGui::GetTextLineHeight() + ImGui::GetStyle().FramePadding.y * 2.0f;
+	ImGui::SetWindowSize(ImVec2(boardWidth * tileWidth, boardHeight * tileHeight + titleBarHeight));
+
+	auto drawlist = ImGui::GetWindowDrawList();
+	for (unsigned y = 0; y < boardHeight; y++)
+	{
+		for (unsigned x = 0; x < boardWidth; x++)
+		{
+			auto result = CheckPosition(x, y);
+
+			if (ResultNone(result))
+				//draw black tile
+				DrawFilledRect(drawlist, x, y, ImVec4(0, 0, 0, 255));
+			else if (ResultHead(result))
+				//draw head -> white with eyes
+				DrawFilledRect(drawlist, x, y, ImVec4(255, 255, 255, 255));
+			else if (ResultBody(result))
+				//draw body -> white
+				DrawFilledRect(drawlist, x, y, ImVec4(255, 255, 255, 255));
+			else if (ResultApple(result))
+				//draw apple -> white
+				DrawFilledRect(drawlist, x, y, ImVec4(255, 255, 255, 255));
+		}
+	}
+
+	ImGui::End();
+}
+
+void Snake::CheckControls()
+{
+	if (IsKeyDown(VK_UP))
+		SetVelocity(0, 1);
+	else if (IsKeyDown(VK_RIGHT))
+		SetVelocity(1, 0);
+	else if (IsKeyDown(VK_DOWN))
+		SetVelocity(0, -1);
+	else if (IsKeyDown(VK_LEFT))
+		SetVelocity(-1, 0);
+
+#ifdef _DEBUG
+	if (IsKeyDown(VK_CONTROL))
+		AddPiece();
+#endif //_DEBUG
+}
+
+void Snake::CheckAppleSpawn()
+{
+	if (rand() % 100 + 1 < appleChance) //1 to 100
+	{
+		AddApple(boardWidth, boardHeight);
+	}
+}

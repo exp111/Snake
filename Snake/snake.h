@@ -1,5 +1,8 @@
 #pragma once
 #include <vector>
+#include <Windows.h>
+
+#include "imgui/imgui.h"
 
 class SnakePiece
 {
@@ -76,6 +79,7 @@ enum
 class Snake
 {
 public:
+	//Game Related
 	std::vector<SnakePiece*> pieces;
 
 	std::vector<int> velocity;
@@ -111,6 +115,16 @@ public:
 
 	void DeleteApple(unsigned num);
 	void DeleteApple(unsigned x, unsigned y);
+
+	//Drawing and stuff
+	void Start();
+	void Run();
+
+	void DrawFilledRect(ImDrawList* drawlist, unsigned x, unsigned y, ImVec4 color);
+	void Draw();
+
+	void CheckControls();
+	void CheckAppleSpawn();
 
 private:
 	bool running = false;

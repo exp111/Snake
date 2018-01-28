@@ -111,12 +111,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\Github\ImGuiTest\ImGuiMenu\DirectX9\imgui\dx9\imgui_impl_dx9.cpp" />
+    <ClCompile Include="..\..\..\..\Github\ImGuiTest\ImGuiMenu\DirectX9\imgui\imgui.cpp" />
+    <ClCompile Include="..\..\..\..\Github\ImGuiTest\ImGuiMenu\DirectX9\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\..\..\..\Github\ImGuiTest\ImGuiMenu\DirectX9\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Color.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="menu.cpp" />
     <ClCompile Include="snake.cpp" />
+    <ClCompile Include="UI.cpp" />
+    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\Github\ImGuiTest\ImGuiMenu\DirectX9\imgui\dx9\imgui_impl_dx9.h" />
+    <ClInclude Include="..\..\..\..\Github\ImGuiTest\ImGuiMenu\DirectX9\imgui\imconfig.h" />
+    <ClInclude Include="..\..\..\..\Github\ImGuiTest\ImGuiMenu\DirectX9\imgui\imgui.h" />
+    <ClInclude Include="..\..\..\..\Github\ImGuiTest\ImGuiMenu\DirectX9\imgui\imgui_extra.h" />
+    <ClInclude Include="..\..\..\..\Github\ImGuiTest\ImGuiMenu\DirectX9\imgui\imgui_internal.h" />
+    <ClInclude Include="..\..\..\..\Github\ImGuiTest\ImGuiMenu\DirectX9\imgui\stb_rect_pack.h" />
+    <ClInclude Include="..\..\..\..\Github\ImGuiTest\ImGuiMenu\DirectX9\imgui\stb_textedit.h" />
+    <ClInclude Include="..\..\..\..\Github\ImGuiTest\ImGuiMenu\DirectX9\imgui\stb_truetype.h" />
+    <ClInclude Include="Color.hpp" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="menu.hpp" />
+    <ClInclude Include="singleton.hpp" />
     <ClInclude Include="snake.h" />
+    <ClInclude Include="UI.hpp" />
+    <ClInclude Include="Utils.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
